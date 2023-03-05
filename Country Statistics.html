@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kr397 Assignment 1</title>
+
+
+<!-- Styles for the table.-->
+  <style>
+    img {
+
+      width: 120px;
+    }
+
+    #tableStyle1 {
+      table-layout: fixed;
+      border-collapse: collapse;
+
+    }
+
+    #tableStyle1 td,
+    #tableStyle1 tr {
+
+      border: 2px solid rgb(0, 0, 0);
+      padding: 8px;
+
+    }
+
+    #tableStyle1 th {
+      border: 2px solid rgb(0, 0, 0);
+      border-spacing: 10px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+
+    }
+  </style>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+  <script>
+
+
+    // clears all table rows when called
+    function clearTable() {
+      var rowCount = tableStyle1.rows.length;
+      for (var i = rowCount - 1; i > 0; i--)
+        tableStyle1.deleteRow(i);
+    }
+
+    $(() => {
+      const url = 'https://www.cs.kent.ac.uk/people/staff/yh/co539-A1/countryData.php?regions'
+      url1 = 'https://www.cs.kent.ac.uk/people/staff/yh/co539-A1/countryData.php?region='
+
+      const region1 = (data) => {
+
+        for (let i = 0; i < data.length; i++) {
+          $("select").append(
+            `<option>
+
+                        ${data[i]}
+                        
+                      </option>`
+          )
+        }
+        $("select").on("change", function () {
+
+
+          const select2 = $(this).val()
+
+          $.get(
+            url1 + select2,
+            function (data) {
+              // all paragraphs are hidden from the start.
+              $("p1").hide();
+              $("p2").hide();
+              $("p3").hide();
+              $("p4").hide();
+              $("p5").hide();
+              $("p6").hide();
+              clearTable();
+
+
+              //gets the information from the countryData.php file and appends it to the page.
+              for (let i = 0; i < data.length; i++) {
+                var currentImage = data[i].flag;
+                $('table').append('<tr><td>' + data[i].code + '</td><td>' + data[i].name + "</td><td><img src=" + data[i].flag + "></td><td>" + data[i].capital + '</td><td>' + data[i].region + '</td><td>' + data[i].info.population + '</td><td>' + data[i].info.language + '</td></tr>')
+
+              }
+              //depending on whats selected, it shows the corresponding paragraph information on it.
+              if (select2 == "Asia") {
+
+                $("p1").hide();
+                $("p2").hide();
+                $("p3").show();
+                $("p4").hide();
+                $("p5").hide();
+                $("p6").hide();
+              }
+              if (select2 == "Africa") {
+
+                $("p1").show();
+                $("p2").hide();
+                $("p3").hide();
+                $("p4").hide();
+                $("p5").hide();
+                $("p6").hide();
+              }
+              if (select2 == "Oceania") {
+
+                $("p1").hide();
+                $("p2").hide();
+                $("p3").hide();
+                $("p4").hide();
+                $("p5").show();
+                $("p6").hide();
+              }
+              if (select2 == "Americas") {
+
+                $("p1").hide();
+                $("p2").show();
+                $("p3").hide();
+                $("p4").hide();
+                $("p5").hide();
+                $("p6").hide();
+              }
+              if (select2 == "Europe") {
+
+                $("p1").hide();
+                $("p2").hide();
+                $("p3").hide();
+                $("p4").show();
+                $("p5").hide();
+                $("p6").hide();
+              }
+              if (select2 == "Polar") {
+
+                $("p1").hide();
+                $("p2").hide();
+                $("p3").hide();
+                $("p4").hide();
+                $("p5").hide();
+                $("p6").show();
+              }
+
+            },
+            "json"
+          )
+        })
+      }
+
+
+      // AJAX call
+      $.get(
+        url,
+        function (data) {
+          region1(data)
+        },
+        "json"
+      )
+
+      // Dynamically change text color
+      $("tr").css("color", "blue")
+    })
+  </script>
+</head>
+
+
+
+<body>
+  <!-- These are the paragraphs that are hidden on the table and are then shown depending on whats selected. Contains details on populations and languages.-->
+  <p1> The average population in Africa is 19761762. <br> The total number of countries in this region is 60. <br> The
+    most popular language is French. This is used by 20 countries.</p1>
+  <p2> The average population in America is 17373994. <br> The total number of countries in this region is 57. <br> The
+    most popular language is English. This is used by 25 countries.</p2>
+  <p3> The average population in Asia is 87725095.<br> The total number of countries in this region is 50. <br> The most
+    popular language is Arabic. This is used by 12 countries. </p3>
+  <p4> The average population in Europe is 14088456. <br> The total number of countries in this region is 53. <br> The
+    most popular language is English. This is used by 5 Countries. </p4>
+  <p5> The average population in Oceania is 1487772.<br> The total number of countries in this region is 27.<br> The
+    most popular language is English. This is used by 22 countries. </p5>
+  <p6> The average population in Polar is 1000. <br> The total number of countries in this region is 1.<br> The most
+    popular language is English. This language is used by 1 country.</p6>
+  <script>
+
+
+
+
+    //hides each of the paragraphs shown above.
+    $("p1").hide();
+    $("p2").hide();
+    $("p3").hide();
+    $("p4").hide();
+    $("p5").hide();
+    $("p6").hide();
+
+  </script>
+
+  <label for="label">
+    <p>Choose a region:</p>
+  </label>
+
+
+  <!-- The select button-->
+  <select name="region" id="region">
+    <option value="">Choose here</option>
+
+  </select>
+
+
+  <!-- The search bar with calls to a function called SearchResult.-->
+  <input id="searchBar" type="text" placeholder="Search.." name="search3">
+  <button type="submit" onclick="searchResult()"> Search </button>
+
+
+   <!--table with all the headers assigned. -->
+  <table id="tableStyle1">
+    <th> Code</th>
+    <th> Name</th>
+    <th> Flag</th>
+    <th> Capital</th>
+    <th> Region</th>
+    <th> Population</th>
+    <th> Language </th>
+  </table>
+
+
+  <script>
+    //Function used for searchResult. Filtered the ones that I will be using to true (Name and Capital).
+    //then used regex to correctly apply this onto the page.
+    const searchResult = () => {
+      const columns = [
+        { name: 'Code', index: 0, isFilter: false },
+        { name: 'Name', index: 1, isFilter: true },
+        { name: 'Flag', index: 2, isFilter: false },
+        { name: 'Capital', index: 3, isFilter: true },
+        { name: 'Region', index: 4, isFilter: false },
+        { name: 'Population', index: 5, isFilter: false },
+        { name: 'Language', index: 6, isFilter: false }
+      ]
+      const filterColumns = columns.filter(c => c.isFilter).map(c => c.index)
+      const trs = document.querySelectorAll(`#tableStyle1 tr:not(.header)`)
+      const filter = document.querySelector('#searchBar').value
+      const regex = new RegExp(escape(filter), 'i')
+      const isFoundInTds = td => regex.test(td.innerHTML)
+      const isFound = childrenArr => childrenArr.some(isFoundInTds)
+      const setTrStyleDisplay = ({ style, children }) => {
+        style.display = isFound([
+          ...filterColumns.map(c => children[c])
+        ]) ? '' : 'none'
+      }
+
+      trs.forEach(setTrStyleDisplay)
+    }
+
+  </script>
+
+
+</body>
+
+</html>
